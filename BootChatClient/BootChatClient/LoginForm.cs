@@ -22,15 +22,6 @@ namespace BootChatClient
         {
             ForgotPasswordForm newForgotPasswordForm = new ForgotPasswordForm();
             DialogResult userPressed = newForgotPasswordForm.ShowDialog();
-
-            if(userPressed == DialogResult.OK)
-            {
-                MessageBox.Show("User clicked OK");
-            }else if(userPressed == DialogResult.Cancel)
-            {
-                MessageBox.Show("User clicked cancel");
-            }
-
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -42,15 +33,14 @@ namespace BootChatClient
             postData.Add("username", txtUsername.Text);
             postData.Add("password", txtPassword.Text);
 
-            Dictionary<String, Object> result = agent.doHttpPost("http://192.168.1.204", postData);
+            Dictionary<String, Object> result = agent.doHttpPost("http://localhost", postData);
 
             bool wasSuccess = (bool)result["success"];
             if (wasSuccess){
-                string nickname = (string)result["nickname"];
-                MessageBox.Show("Welcome, " + nickname);
+                MessageBox.Show("Welcome, " + txtUsername.Text, "Success");
             } else {
                 string exceptionMessage = (string)result["exception"];
-                MessageBox.Show("Failure with exception: " + exceptionMessage);
+                MessageBox.Show(exceptionMessage, "Error");
             }
 
         }

@@ -121,6 +121,7 @@
             this.btCancel.TabIndex = 0;
             this.btCancel.Text = "Cancel";
             this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
             // 
             // errPassword
             // 
@@ -145,9 +146,11 @@
             this.Controls.Add(this.txtUser);
             this.Font = new System.Drawing.Font("Comic Sans MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "CreateNewUserForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create a new account";
+            this.Load += new System.EventHandler(this.CreateNewUserForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errPassword)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errUsername)).EndInit();
             this.ResumeLayout(false);

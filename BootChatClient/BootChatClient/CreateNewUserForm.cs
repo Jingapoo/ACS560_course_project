@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -35,7 +36,27 @@ namespace BootChatClient
         {
             if (!checkPasswordMatch(false))
             {
-                //can not eh eh
+                return;
+            }
+
+            BootChatHttpAgent agent = new BootChatHttpAgent();
+            NameValueCollection postData = new NameValueCollection();
+
+            postData.Add("request", "create");
+            postData.Add("username", txtUser.Text);
+            postData.Add("question", txtSecureQue.Text);
+            postData.Add("answer", txtSecureAns.Text);
+            postData.Add("password", maskPassword.Text);
+
+            Dictionary<String, Object> result = agent.doHttpPost("http://localhost", postData);
+            bool wasSuccess = (bool)result["success"];
+
+            if (!wasSuccess)
+            {
+                MessageBox.Show((string)result["exception"]);
+            }else{
+                MessageBox.Show("Success! You may now login");
+                this.DialogResult = DialogResult.OK;
             }
         }
 
@@ -89,8 +110,7 @@ namespace BootChatClient
             if(txtSecureQue.Text == "Enter your security question")
             {
                 txtSecureQue.Clear();
-                txtSecureQue.ForeColor = Color.Black;
-                txtSecureQue.UseSystemPasswordChar = true;
+                txtSecureQue.ForeColor = Color.Black;  
             }
         }
 
@@ -100,8 +120,18 @@ namespace BootChatClient
             {
                 txtSecureAns.Clear();
                 txtSecureAns.ForeColor = Color.Black;
-                txtSecureAns.UseSystemPasswordChar = true;
             }
+        }
+
+        private void btCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void CreateNewUserForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

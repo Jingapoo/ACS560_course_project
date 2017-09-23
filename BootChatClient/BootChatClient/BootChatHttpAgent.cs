@@ -26,7 +26,7 @@ namespace BootChatClient
                     byte[] response = client.UploadValues(URL, postData);
                     String jsonText = System.Text.Encoding.UTF8.GetString(response);
 
-                    //System.Windows.Forms.MessageBox.Show(jsonText);
+                    System.Windows.Forms.MessageBox.Show(jsonText);
 
                     JavaScriptSerializer jss = new JavaScriptSerializer();
                     Dictionary<String, Object> dict = jss.Deserialize<dynamic>(jsonText);
@@ -40,6 +40,14 @@ namespace BootChatClient
                 }
             }
             return null;
+        }
+
+        public static void DebugPrintDictionary(Dictionary<String,Object> map)
+        {
+            foreach(string key in map.Keys)
+            {
+                System.Windows.Forms.MessageBox.Show(key + " = " + (string)map[key].ToString());
+            }
         }
     }
 }
