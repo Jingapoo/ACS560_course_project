@@ -1,0 +1,22 @@
+Do Not put your entire XAMPP directory in the repository
+Insted, just keep `htdocs` and the MySql Database (in .sql format) here.
+
+
+------------------------------------------------------------------------------------------
+TO LOAD .SQL FILE INTO XAMPP
+Make sure Apache and MySql are running in XAMPP.
+
+cd C:\path\to\xampp
+cd mysql\bin
+mysql -u root < C:\path\to\git\repository\XAMPP\theDatabase.sql
+
+WARNING: when you load a .sql file into XAMPP mysql, it will overwrite everything.
+------------------------------------------------------------------------------------------
+TO SAVE DATABASE TO .SQL FILE
+Make sure Apache and MySql are running in XAMPP.
+
+cd C:\path\to\xampp
+cd mysql\bin
+mysqldump --all-databases -u root > C:\path\to\git\repository\XAMPP\theDatabaseWithChanges.sql
+------------------------------------------------------------------------------------------
+
