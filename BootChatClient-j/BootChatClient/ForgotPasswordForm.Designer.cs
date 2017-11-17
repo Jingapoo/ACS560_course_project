@@ -43,28 +43,31 @@
             this.txtConfirmPassword = new System.Windows.Forms.TextBox();
             this.errPassword = new System.Windows.Forms.ErrorProvider(this.components);
             this.errUsername = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errQuestion = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.errPassword)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errUsername)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errQuestion)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSubmit
             // 
+            this.btnSubmit.BackColor = System.Drawing.Color.Black;
             this.btnSubmit.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubmit.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSubmit.ForeColor = System.Drawing.Color.Lime;
             this.btnSubmit.Location = new System.Drawing.Point(339, 482);
             this.btnSubmit.Margin = new System.Windows.Forms.Padding(5);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(132, 44);
             this.btnSubmit.TabIndex = 5;
             this.btnSubmit.Text = "Submit";
-            this.btnSubmit.UseVisualStyleBackColor = true;
+            this.btnSubmit.UseVisualStyleBackColor = false;
             this.btnSubmit.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // linkBack
             // 
             this.linkBack.AutoSize = true;
             this.linkBack.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkBack.Location = new System.Drawing.Point(49, 491);
+            this.linkBack.Location = new System.Drawing.Point(36, 491);
             this.linkBack.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.linkBack.Name = "linkBack";
             this.linkBack.Size = new System.Drawing.Size(45, 23);
@@ -76,7 +79,9 @@
             // lblQuestion
             // 
             this.lblQuestion.AutoSize = true;
+            this.lblQuestion.BackColor = System.Drawing.Color.Black;
             this.lblQuestion.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblQuestion.ForeColor = System.Drawing.Color.Lime;
             this.lblQuestion.Location = new System.Drawing.Point(36, 110);
             this.lblQuestion.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblQuestion.Name = "lblQuestion";
@@ -86,7 +91,9 @@
             // 
             // txtQuestion
             // 
+            this.txtQuestion.BackColor = System.Drawing.Color.Black;
             this.txtQuestion.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtQuestion.ForeColor = System.Drawing.Color.Lime;
             this.txtQuestion.Location = new System.Drawing.Point(39, 138);
             this.txtQuestion.Margin = new System.Windows.Forms.Padding(5);
             this.txtQuestion.Name = "txtQuestion";
@@ -96,7 +103,9 @@
             // lblAnswer
             // 
             this.lblAnswer.AutoSize = true;
+            this.lblAnswer.BackColor = System.Drawing.Color.Black;
             this.lblAnswer.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAnswer.ForeColor = System.Drawing.Color.Lime;
             this.lblAnswer.Location = new System.Drawing.Point(36, 203);
             this.lblAnswer.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblAnswer.Name = "lblAnswer";
@@ -106,7 +115,9 @@
             // 
             // txtAnswer
             // 
+            this.txtAnswer.BackColor = System.Drawing.Color.Black;
             this.txtAnswer.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAnswer.ForeColor = System.Drawing.Color.Lime;
             this.txtAnswer.Location = new System.Drawing.Point(39, 231);
             this.txtAnswer.Margin = new System.Windows.Forms.Padding(5);
             this.txtAnswer.Name = "txtAnswer";
@@ -116,6 +127,8 @@
             // lblUsername
             // 
             this.lblUsername.AutoSize = true;
+            this.lblUsername.BackColor = System.Drawing.Color.Black;
+            this.lblUsername.ForeColor = System.Drawing.Color.Lime;
             this.lblUsername.Location = new System.Drawing.Point(35, 25);
             this.lblUsername.Name = "lblUsername";
             this.lblUsername.Size = new System.Drawing.Size(207, 23);
@@ -124,7 +137,9 @@
             // 
             // txtUsername
             // 
+            this.txtUsername.BackColor = System.Drawing.Color.Black;
             this.txtUsername.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUsername.ForeColor = System.Drawing.Color.Lime;
             this.txtUsername.Location = new System.Drawing.Point(39, 51);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(203, 26);
@@ -133,6 +148,8 @@
             // txtNewP
             // 
             this.txtNewP.AutoSize = true;
+            this.txtNewP.BackColor = System.Drawing.Color.Black;
+            this.txtNewP.ForeColor = System.Drawing.Color.Lime;
             this.txtNewP.Location = new System.Drawing.Point(35, 292);
             this.txtNewP.Name = "txtNewP";
             this.txtNewP.Size = new System.Drawing.Size(240, 23);
@@ -141,7 +158,9 @@
             // 
             // txtNewPassword
             // 
+            this.txtNewPassword.BackColor = System.Drawing.Color.Black;
             this.txtNewPassword.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNewPassword.ForeColor = System.Drawing.Color.Lime;
             this.txtNewPassword.Location = new System.Drawing.Point(39, 320);
             this.txtNewPassword.Margin = new System.Windows.Forms.Padding(5);
             this.txtNewPassword.Name = "txtNewPassword";
@@ -152,6 +171,8 @@
             // lblNewConfirm
             // 
             this.lblNewConfirm.AutoSize = true;
+            this.lblNewConfirm.BackColor = System.Drawing.Color.Black;
+            this.lblNewConfirm.ForeColor = System.Drawing.Color.Lime;
             this.lblNewConfirm.Location = new System.Drawing.Point(36, 375);
             this.lblNewConfirm.Name = "lblNewConfirm";
             this.lblNewConfirm.Size = new System.Drawing.Size(257, 23);
@@ -160,7 +181,9 @@
             // 
             // txtConfirmPassword
             // 
+            this.txtConfirmPassword.BackColor = System.Drawing.Color.Black;
             this.txtConfirmPassword.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtConfirmPassword.ForeColor = System.Drawing.Color.Lime;
             this.txtConfirmPassword.Location = new System.Drawing.Point(40, 401);
             this.txtConfirmPassword.Name = "txtConfirmPassword";
             this.txtConfirmPassword.Size = new System.Drawing.Size(431, 26);
@@ -175,11 +198,15 @@
             // 
             this.errUsername.ContainerControl = this;
             // 
+            // errQuestion
+            // 
+            this.errQuestion.ContainerControl = this;
+            // 
             // ForgotPasswordForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(510, 548);
             this.Controls.Add(this.txtConfirmPassword);
             this.Controls.Add(this.lblNewConfirm);
@@ -203,6 +230,7 @@
             this.Text = "Account Recovery";
             ((System.ComponentModel.ISupportInitialize)(this.errPassword)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errUsername)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errQuestion)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -223,5 +251,6 @@
         private System.Windows.Forms.TextBox txtConfirmPassword;
         private System.Windows.Forms.ErrorProvider errPassword;
         private System.Windows.Forms.ErrorProvider errUsername;
+        private System.Windows.Forms.ErrorProvider errQuestion;
     }
 }

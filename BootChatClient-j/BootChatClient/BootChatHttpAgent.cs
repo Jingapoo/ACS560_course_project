@@ -56,6 +56,12 @@ namespace BootChatClient
                     result["exception"] = "BootChatAgentException: " + e.Message;
                 }
             }
+
+            if (!result.ContainsKey("success"))
+            {
+                result["success"] = false;
+                result["exception"] = "An empty result exception was created.";
+            }
             return result;
         }
 
@@ -135,6 +141,22 @@ namespace BootChatClient
             return result;
         }
 
+        public Dictionary<String, Object> forgotPasswordRequest(String username, String question, String answer, String newpassword)
+        {
+            Dictionary<String, Object> result = new Dictionary<string, object>();
+
+            Dictionary<String, Object> postData = new Dictionary<String, Object>();
+            postData.Add("request", "forgotpass");
+            postData.Add("username", username);
+            postData.Add("security_question", question);
+            postData.Add("security_answer", answer);
+            postData.Add("newpassword", newpassword);
+
+            result = request(postData);
+
+            return result;
+        }
+
         public Dictionary<String, Object> setNewMessage(Boolean value)
         {
             Dictionary<String, Object> result = new Dictionary<string, object>();
@@ -150,23 +172,6 @@ namespace BootChatClient
             postData.Add("username", this.authenticatedUsername);
             postData.Add("password", this.authenticatedPassword);
             postData.Add("value", value ? "1" : "0");
-
-            result = request(postData);
-
-            return result;
-        }
-
-        public Dictionary<String, Object> registerNewUser(String username, String password, String nickname, String gender, String question, String answer)
-        {
-            Dictionary<String, Object> result = new Dictionary<string, object>();
-
-            Dictionary<String, Object> postData = new Dictionary<String, Object>();
-            postData.Add("request", "register");
-            postData.Add("username", username);
-            postData.Add("password", password);
-            postData.Add("nickname", username);
-            postData.Add("question", question);
-            postData.Add("answer", answer);
 
             result = request(postData);
 

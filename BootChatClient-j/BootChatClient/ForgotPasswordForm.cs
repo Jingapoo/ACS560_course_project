@@ -26,13 +26,8 @@ namespace BootChatClient
                 return;
             }
 
-            BootChatHttpAgent agent = new BootChatHttpAgent("https://sandbox-jpsimos.c9users.io");
-          
-            //...
-
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            Dictionary<String,Object> result = Program.agent.forgotPasswordRequest(txtUsername.Text, txtQuestion.Text, txtAnswer.Text, txtNewPassword.Text);
+            Program.agent.DebugPrintDictionary(result);
         }
 
         private void linkBack_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -57,13 +52,23 @@ namespace BootChatClient
                 errUsername.SetError(txtUsername, null);
             }
 
-            if(txtConfirmPassword.Text != txtNewPassword.Text){
+            if(txtConfirmPassword.Text != txtNewPassword.Text || txtNewPassword.Text.Length < 1 || txtConfirmPassword.Text.Length < 1){
                 if (showNew){
                     errPassword.SetError(txtConfirmPassword, "Passwords do not match");
                 }
                 result = false;
             }else{
                 errPassword.SetError(txtConfirmPassword, null);
+            }
+
+            if(txtAnswer.Text.Length < 1 || txtQuestion.Text.Length < 1)
+            {
+                if (showNew){
+                    errQuestion.SetError(txtQuestion, "Must provide a security question and answer.");
+                }
+                result = false;
+            }else{
+                errQuestion.SetError(txtQuestion, null);
             }
 
             return result;

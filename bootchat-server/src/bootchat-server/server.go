@@ -162,6 +162,12 @@ func (sqlobject *SqlObject) handleConnection(response http.ResponseWriter, reque
 	 	return
 	 }
 	 
+	 if request == "forgotpass"{
+	 	jsonString, _ :=mapToJsonString(handleForgotPasswordRequest(sqlobject.db, postData))
+	 	fmt.Fprintf(response, jsonString)
+	 	return
+	 }
+	 
 
 	 fmt.Fprintf(response, getErrorJson("unimplemented request"))
 	 return
@@ -226,12 +232,20 @@ func handleSetNewMessageRequest(db *sql.DB, postData map[string]interface{}) (ma
 	}
 	
 	var username string = postData["username"].(string)
-	value,err := strconv.Atoi(postData["value"].(string))
-	if err != nil{
-		value = 1
+	var svalue string = postData["value"].(string)
+	
+	value := 1
+	
+	if svalue != "1"{
+		value = 0
 	}
 	
-	err = set_new_message_flag(db, username, value)
+	//value,err := strconv.Atoi(postData["value"].(string))
+	//if err != nil{
+	//	value = 1
+	//}
+	
+	err := set_new_message_flag(db, username, value)
 	
 	if err != nil{
 		replyMap["exception"] = err.Error()
@@ -272,6 +286,67 @@ func handleGetInboxStatusRequest(db *sql.DB, postData map[string]interface{}) (m
 	replyMap["new"] = strconv.Itoa(newMsg)
 	
 	set_new_message_flag(db, username, 0)
+	return replyMap
+}
+
+func handleForgotPasswordRequest(db *sql.DB, postData map[string]interface{}) (map[string]string){
+	replyMap := make(map[string]string)
+	replyMap["success"] = "false"
+	
+	var username string
+	var question string
+	var answer string
+	var newpassword string
+	var missing bool = false
+	
+	if u,exists := postData["username"]; exists{
+		username,_ = u.(string)
+	}else{
+		missing = true
+	}
+	
+	if q,exists := postData["security_question"]; exists{
+		question,_ = q.(string)
+	}else{
+		missing = true
+	}
+	
+	if a,exists := postData["security_answer"]; exists{
+		answer,_ = a.(string)
+	}else{
+		missing = true
+	}
+	
+	if p,exists := postData["newpassword"]; exists{
+		newpassword,_ = p.(string)
+	}else{
+		missing = true
+	}
+	
+	if(missing){
+		replyMap["exception"] = "missing parameter(s)"
+		return replyMap
+	}
+	
+	controlRow,err := get_control_user_row(db, username)
+	
+	if err != nil{
+		replyMap["exception"] = err.Error()
+		return replyMap
+	}
+	
+	if controlRow["security_answer"] != answer || controlRow["security_question"] != question{
+		replyMap["exception"] = "invalid question/answer"
+		return replyMap
+	}
+	
+	err = set_password(db, username, newpassword)
+	if err != nil{
+		replyMap["exception"] = err.Error()
+		return replyMap
+	}
+	
+	replyMap["success"] = "true"
 	return replyMap
 }
 

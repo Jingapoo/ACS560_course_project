@@ -173,10 +173,23 @@ namespace BootChatClient
             tick = false;
         }
 
-        private void btnCreateNew_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
         {
-            SendTo st = new SendTo();
-            st.ShowDialog();
+            this.Close();
+        }
+
+        private void menuPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+                User32.ReleaseCapture();
+                User32.SendMessage(Handle, User32.WM_NCLBUTTONDOWN, User32.HT_CAPTION, 0);
+            }
+        }
+
+        private void btnMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }

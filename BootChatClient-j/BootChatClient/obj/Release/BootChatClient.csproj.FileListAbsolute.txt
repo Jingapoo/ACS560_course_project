@@ -20,26 +20,3 @@ C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChat
 C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.exe
 C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.pdb
 C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.csprojResolveAssemblyReference.cache
-C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.SendTo.resources
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\BootChatClient.exe.config
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\BootChatClient.exe
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\BootChatClient.pdb
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\EntityFramework.dll
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\EntityFramework.SqlServer.dll
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\System.Data.SQLite.dll
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\System.Data.SQLite.EF6.dll
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\System.Data.SQLite.Linq.dll
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\EntityFramework.xml
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\EntityFramework.SqlServer.xml
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\System.Data.SQLite.xml
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\bin\Release\System.Data.SQLite.dll.config
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.ChatRoomInterface.resources
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.CreateNewUserForm.resources
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.ForgotPasswordForm.resources
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.LoginForm.resources
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.Properties.Resources.resources
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.SendTo.resources
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.csproj.GenerateResource.Cache
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.csproj.CoreCompileInputs.cache
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.exe
-C:\Users\Jingru\Downloads\BootChatClient-j\BootChatClient\obj\Release\BootChatClient.pdb

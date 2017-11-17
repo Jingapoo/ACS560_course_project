@@ -26,6 +26,7 @@ namespace BootChatClient
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+
             if (chkRememberMe.Checked)
             {
                 Program.localdb.updateValue("saved_user", txtUsername.Text);

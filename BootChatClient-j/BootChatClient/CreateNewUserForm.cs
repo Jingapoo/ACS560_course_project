@@ -23,7 +23,7 @@ namespace BootChatClient
             if(txtUser.Text == "Username")
             {
                 txtUser.Clear();
-                txtUser.ForeColor = Color.Black;
+                txtUser.ForeColor = Color.LightGreen;
             }
         }
 
@@ -39,18 +39,8 @@ namespace BootChatClient
                 return;
             }
 
-            Dictionary<String, Object> result = Program.agent.registerNewUser(txtUser.Text, maskPassword.Text, txtUser.Text, String.Empty, txtSecureQue.Text, txtSecureAns.Text);
-            Boolean success = Convert.ToBoolean(result["success"]);
+            
 
-            if (success)
-            {
-                MessageBox.Show("Successfully registered.");
-            }
-            else
-            {
-                MessageBox.Show("Error: " + Convert.ToString(result["exception"]));
-            }
-            this.Close();
             //...
         }
 
@@ -95,7 +85,7 @@ namespace BootChatClient
             if (maskPassword.Text == "Password")
             {
                 maskPassword.Clear();
-                maskPassword.ForeColor = Color.Black;
+                maskPassword.ForeColor = Color.LightGreen;
                 maskPassword.UseSystemPasswordChar = true;
             }
         }
@@ -105,7 +95,7 @@ namespace BootChatClient
             if(maskConfirm.Text == "Confirm Password")
             {
                 maskConfirm.Clear();
-                maskConfirm.ForeColor = Color.Black;
+                maskConfirm.ForeColor = Color.LightGreen;
                 maskConfirm.UseSystemPasswordChar = true;
             }
         }
@@ -120,7 +110,7 @@ namespace BootChatClient
             if(txtSecureQue.Text == "Enter your security question")
             {
                 txtSecureQue.Clear();
-                txtSecureQue.ForeColor = Color.Black;  
+                txtSecureQue.ForeColor = Color.LightGreen;  
             }
         }
 
@@ -129,7 +119,7 @@ namespace BootChatClient
             if(txtSecureAns.Text == "Enter your security answer")
             {
                 txtSecureAns.Clear();
-                txtSecureAns.ForeColor = Color.Black;
+                txtSecureAns.ForeColor = Color.LightGreen;
             }
         }
 

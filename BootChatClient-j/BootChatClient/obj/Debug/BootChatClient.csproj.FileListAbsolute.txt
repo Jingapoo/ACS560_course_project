@@ -38,5 +38,3 @@ C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChat
 C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChatClient-j\BootChatClient\obj\Debug\BootChatClient.csproj.CoreCompileInputs.cache
 C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChatClient-j\BootChatClient\obj\Debug\BootChatClient.exe
 C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChatClient-j\BootChatClient\obj\Debug\BootChatClient.pdb
-C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChatClient-j\BootChatClient\obj\Debug\BootChatClient.csprojResolveAssemblyReference.cache
-C:\Users\jacob psimos\Desktop\repositories\school\ACS560_course_project\BootChatClient-j\BootChatClient\obj\Debug\BootChatClient.SendTo.resources

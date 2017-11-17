@@ -44,8 +44,9 @@
             // 
             // txtUser
             // 
+            this.txtUser.BackColor = System.Drawing.Color.Black;
             this.txtUser.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUser.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.txtUser.ForeColor = System.Drawing.Color.Lime;
             this.txtUser.Location = new System.Drawing.Point(80, 27);
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(164, 26);
@@ -55,8 +56,9 @@
             // 
             // maskPassword
             // 
+            this.maskPassword.BackColor = System.Drawing.Color.Black;
             this.maskPassword.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maskPassword.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.maskPassword.ForeColor = System.Drawing.Color.Lime;
             this.maskPassword.Location = new System.Drawing.Point(80, 70);
             this.maskPassword.Name = "maskPassword";
             this.maskPassword.Size = new System.Drawing.Size(164, 26);
@@ -66,8 +68,9 @@
             // 
             // maskConfirm
             // 
+            this.maskConfirm.BackColor = System.Drawing.Color.Black;
             this.maskConfirm.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maskConfirm.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.maskConfirm.ForeColor = System.Drawing.Color.Lime;
             this.maskConfirm.Location = new System.Drawing.Point(80, 116);
             this.maskConfirm.Name = "maskConfirm";
             this.maskConfirm.Size = new System.Drawing.Size(164, 26);
@@ -79,8 +82,9 @@
             // 
             // txtSecureQue
             // 
+            this.txtSecureQue.BackColor = System.Drawing.Color.Black;
             this.txtSecureQue.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSecureQue.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.txtSecureQue.ForeColor = System.Drawing.Color.Lime;
             this.txtSecureQue.Location = new System.Drawing.Point(31, 163);
             this.txtSecureQue.Name = "txtSecureQue";
             this.txtSecureQue.Size = new System.Drawing.Size(265, 26);
@@ -90,8 +94,9 @@
             // 
             // txtSecureAns
             // 
+            this.txtSecureAns.BackColor = System.Drawing.Color.Black;
             this.txtSecureAns.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSecureAns.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            this.txtSecureAns.ForeColor = System.Drawing.Color.Lime;
             this.txtSecureAns.Location = new System.Drawing.Point(31, 205);
             this.txtSecureAns.Name = "txtSecureAns";
             this.txtSecureAns.Size = new System.Drawing.Size(265, 26);
@@ -101,8 +106,9 @@
             // 
             // btnContinue
             // 
+            this.btnContinue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnContinue.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnContinue.ForeColor = System.Drawing.Color.Black;
+            this.btnContinue.ForeColor = System.Drawing.Color.Lime;
             this.btnContinue.Location = new System.Drawing.Point(221, 252);
             this.btnContinue.Name = "btnContinue";
             this.btnContinue.Size = new System.Drawing.Size(75, 37);
@@ -113,8 +119,9 @@
             // 
             // btCancel
             // 
+            this.btCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btCancel.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btCancel.ForeColor = System.Drawing.Color.Black;
+            this.btCancel.ForeColor = System.Drawing.Color.Lime;
             this.btCancel.Location = new System.Drawing.Point(31, 252);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(69, 37);
@@ -135,7 +142,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(331, 301);
             this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btnContinue);

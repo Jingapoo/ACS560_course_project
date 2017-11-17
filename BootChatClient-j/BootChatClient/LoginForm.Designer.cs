@@ -34,13 +34,15 @@
             this.chkRememberMe = new System.Windows.Forms.CheckBox();
             this.btnForgotPassword = new System.Windows.Forms.LinkLabel();
             this.btnCreateNewAccount = new System.Windows.Forms.LinkLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // txtUsername
             // 
             this.txtUsername.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUsername.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txtUsername.Location = new System.Drawing.Point(70, 47);
+            this.txtUsername.Location = new System.Drawing.Point(139, 126);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(155, 34);
             this.txtUsername.TabIndex = 1;
@@ -52,7 +54,7 @@
             // 
             this.txtPassword.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPassword.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txtPassword.Location = new System.Drawing.Point(70, 97);
+            this.txtPassword.Location = new System.Drawing.Point(139, 176);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(155, 34);
             this.txtPassword.TabIndex = 2;
@@ -62,10 +64,11 @@
             // 
             // btnLogin
             // 
+            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogin.Location = new System.Drawing.Point(70, 164);
+            this.btnLogin.Location = new System.Drawing.Point(139, 243);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(155, 33);
+            this.btnLogin.Size = new System.Drawing.Size(155, 38);
             this.btnLogin.TabIndex = 0;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
@@ -75,7 +78,7 @@
             // 
             this.chkRememberMe.AutoSize = true;
             this.chkRememberMe.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkRememberMe.Location = new System.Drawing.Point(102, 141);
+            this.chkRememberMe.Location = new System.Drawing.Point(166, 216);
             this.chkRememberMe.Name = "chkRememberMe";
             this.chkRememberMe.Size = new System.Drawing.Size(100, 21);
             this.chkRememberMe.TabIndex = 3;
@@ -86,7 +89,7 @@
             // 
             this.btnForgotPassword.AutoSize = true;
             this.btnForgotPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForgotPassword.Location = new System.Drawing.Point(99, 209);
+            this.btnForgotPassword.Location = new System.Drawing.Point(176, 288);
             this.btnForgotPassword.Name = "btnForgotPassword";
             this.btnForgotPassword.Size = new System.Drawing.Size(86, 13);
             this.btnForgotPassword.TabIndex = 4;
@@ -97,7 +100,7 @@
             // btnCreateNewAccount
             // 
             this.btnCreateNewAccount.AutoSize = true;
-            this.btnCreateNewAccount.Location = new System.Drawing.Point(91, 231);
+            this.btnCreateNewAccount.Location = new System.Drawing.Point(166, 308);
             this.btnCreateNewAccount.Name = "btnCreateNewAccount";
             this.btnCreateNewAccount.Size = new System.Drawing.Size(106, 13);
             this.btnCreateNewAccount.TabIndex = 5;
@@ -105,24 +108,39 @@
             this.btnCreateNewAccount.Text = "Create New Account";
             this.btnCreateNewAccount.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.btnCreateNewAccount_LinkClicked);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::BootChatClient.Properties.Resources.Capture;
+            this.pictureBox1.Location = new System.Drawing.Point(38, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(368, 96);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(309, 267);
+            this.BackColor = System.Drawing.Color.Black;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(451, 365);
+            this.Controls.Add(this.chkRememberMe);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnCreateNewAccount);
             this.Controls.Add(this.btnForgotPassword);
-            this.Controls.Add(this.chkRememberMe);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtUsername);
+            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BootChat - Login";
+            this.TransparencyKey = System.Drawing.SystemColors.MenuHighlight;
             this.Load += new System.EventHandler(this.LoginForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -136,6 +154,7 @@
         private System.Windows.Forms.CheckBox chkRememberMe;
         private System.Windows.Forms.LinkLabel btnForgotPassword;
         private System.Windows.Forms.LinkLabel btnCreateNewAccount;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

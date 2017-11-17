@@ -60,6 +60,22 @@ func add_user(db *sql.DB, username string, nickname string, gender string, quest
 }
 
 
+
+func set_password(db *sql.DB, username string, password string) (error){
+	
+	statement := "UPDATE accounts SET password = ? WHERE username = ?"
+	stmt,err := db.Prepare(statement)
+	if err != nil{
+		return err
+	}
+	
+	_,err = stmt.Exec(md5Sum(password), username)
+	stmt.Close()
+	
+	return err
+}
+
+
 /*
 	user_exists - check if a user exists in accounts
 	 db *sql.DB
@@ -143,6 +159,43 @@ func verify_user_login(db *sql.DB, username string, password string) (bool, erro
 		log.Println("Failed (breakpoint 3)")
 	}
 	return false, nil
+}
+
+func get_control_user_row(db *sql.DB, username string) (map[string]string, error){
+	statement := "SELECT id,security_question,security_answer FROM accounts WHERE username = ?"
+	
+	stmt,err := db.Prepare(statement)
+	
+	if err != nil{
+		return nil,err
+	}
+	
+	row,err := stmt.Query(username)
+
+	if err != nil{
+		return nil,err
+	}
+
+	var id int
+	var security_question string
+	var security_answer string
+
+	row.Next()
+	
+	row.Scan(&id, &security_question, &security_answer)
+	row.Close()
+	stmt.Close()
+	
+	userRow := make(map[string]string)
+	userRow["id"] = strconv.Itoa(id)
+	userRow["security_question"] = security_question
+	userRow["security_answer"] = security_answer
+	
+	if verbose{
+		log.Printf("Got control user row: %s", username);
+	}
+	
+	return userRow, nil
 }
 
 func get_user_row(db *sql.DB, username string) (map[string]string, error){
