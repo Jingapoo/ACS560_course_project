@@ -1,29 +1,29 @@
 package main
 
 import (
-	"fmt"
-	"database/sql"
-	"time"
-	"log"
 	"crypto/md5"
+	"database/sql"
 	"encoding/hex"
+	_ "errors"
+	"fmt"
+	_ "github.com/mattn/go-sqlite3"
+	"log"
 	"strconv"
-	_"github.com/mattn/go-sqlite3"
-	_"errors"
+	"time"
 )
 
-func md5Sum(str string)(string){
+func md5Sum(str string) string {
 	data := []byte(str)
 	csum := md5.Sum(data)
 	return hex.EncodeToString(csum[:])
 }
 
-func open_database(verboseEnable bool) (*sql.DB, error){
+func open_database(verboseEnable bool) (*sql.DB, error) {
 	db, err := sql.Open("sqlite3", "./etc/bootchat.db")
-	if err != nil{
-		return nil,err
+	if err != nil {
+		return nil, err
 	}
-	return db,nil
+	return db, nil
 }
 
 /*
@@ -38,19 +38,19 @@ func open_database(verboseEnable bool) (*sql.DB, error){
 
 	 returns (error)
 */
-func add_user(db *sql.DB, username string, nickname string, gender string, question string, answer string, password string) (error){
-	
-	if verbose{
+func add_user(db *sql.DB, username string, nickname string, gender string, question string, answer string, password string) error {
+
+	if verbose {
 		log.Printf("Creating new user: %s\n", username)
 	}
-	
+
 	password = md5Sum(password)
-	
+
 	statement := "INSERT INTO accounts(username,nickname,gender,security_question,security_answer,password) VALUES(?,?,?,?,?,?)"
 
 	stmt, err := db.Prepare(statement)
-	if err != nil{
-	 return err
+	if err != nil {
+		return err
 	}
 
 	_, err = stmt.Exec(username, nickname, gender, question, answer, password)
@@ -59,23 +59,6 @@ func add_user(db *sql.DB, username string, nickname string, gender string, quest
 	return err
 }
 
-
-
-func set_password(db *sql.DB, username string, password string) (error){
-	
-	statement := "UPDATE accounts SET password = ? WHERE username = ?"
-	stmt,err := db.Prepare(statement)
-	if err != nil{
-		return err
-	}
-	
-	_,err = stmt.Exec(md5Sum(password), username)
-	stmt.Close()
-	
-	return err
-}
-
-
 /*
 	user_exists - check if a user exists in accounts
 	 db *sql.DB
@@ -83,17 +66,17 @@ func set_password(db *sql.DB, username string, password string) (error){
 
 	 returns (bool)
 */
-func user_exists(db *sql.DB, username string) (bool){
+func user_exists(db *sql.DB, username string) bool {
 	statement := "SELECT EXISTS(SELECT id FROM accounts WHERE username = ? LIMIT 1)"
 
 	stmt, err := db.Prepare(statement)
 	if err != nil {
-	 return false
+		return false
 	}
 
 	row, err := stmt.Query(username)
-	if err != nil{
-	 return false
+	if err != nil {
+		return false
 	}
 
 	var result bool
@@ -113,104 +96,67 @@ func user_exists(db *sql.DB, username string) (bool){
 	 password string
 	 returns (bool)
 */
-func verify_user_login(db *sql.DB, username string, password string) (bool, error){
-	
-	if verbose{
+func verify_user_login(db *sql.DB, username string, password string) (bool, error) {
+
+	if verbose {
 		log.Printf("Attempting to login user: %s  ", username)
 	}
-	
+
 	statement := "SELECT id,password FROM accounts WHERE username = ?"
-	
+
 	stmt, err := db.Prepare(statement)
-	if err != nil{
-		if verbose{
+	if err != nil {
+		if verbose {
 			log.Println("Failed (breakpoint 1)")
 		}
 		stmt.Close()
 		return false, err
 	}
-	
+
 	row, err := stmt.Query(username)
-	if err != nil{
-		if verbose{
+	if err != nil {
+		if verbose {
 			log.Println("Failed (breakpoint 2)")
 		}
 		row.Close()
 		stmt.Close()
-	 return false, err
+		return false, err
 	}
-	
+
 	row.Next()
-	
+
 	var id int
 	var password_ string
 	row.Scan(&id, &password_)
 	row.Close()
 	stmt.Close()
-	
-	if password_ == md5Sum(password){
-		if verbose{
+
+	if password_ == md5Sum(password) {
+		if verbose {
 			log.Println("Success")
 		}
-	 return true, nil
+		return true, nil
 	}
-	
-	if verbose{
+
+	if verbose {
 		log.Println("Failed (breakpoint 3)")
 	}
 	return false, nil
 }
 
-func get_control_user_row(db *sql.DB, username string) (map[string]string, error){
-	statement := "SELECT id,security_question,security_answer FROM accounts WHERE username = ?"
-	
-	stmt,err := db.Prepare(statement)
-	
-	if err != nil{
-		return nil,err
-	}
-	
-	row,err := stmt.Query(username)
-
-	if err != nil{
-		return nil,err
-	}
-
-	var id int
-	var security_question string
-	var security_answer string
-
-	row.Next()
-	
-	row.Scan(&id, &security_question, &security_answer)
-	row.Close()
-	stmt.Close()
-	
-	userRow := make(map[string]string)
-	userRow["id"] = strconv.Itoa(id)
-	userRow["security_question"] = security_question
-	userRow["security_answer"] = security_answer
-	
-	if verbose{
-		log.Printf("Got control user row: %s", username);
-	}
-	
-	return userRow, nil
-}
-
-func get_user_row(db *sql.DB, username string) (map[string]string, error){
+func get_user_row(db *sql.DB, username string) (map[string]string, error) {
 	statement := "SELECT id,nickname,gender,new_message FROM accounts WHERE username = ?"
-	
-	stmt,err := db.Prepare(statement)
-	
-	if err != nil{
-		return nil,err
-	}
-	
-	row,err := stmt.Query(username)
 
-	if err != nil{
-		return nil,err
+	stmt, err := db.Prepare(statement)
+
+	if err != nil {
+		return nil, err
+	}
+
+	row, err := stmt.Query(username)
+
+	if err != nil {
+		return nil, err
 	}
 
 	var id int
@@ -219,21 +165,21 @@ func get_user_row(db *sql.DB, username string) (map[string]string, error){
 	var new_message int
 
 	row.Next()
-	
+
 	row.Scan(&id, &nickname, &gender, &new_message)
 	row.Close()
 	stmt.Close()
-	
+
 	userRow := make(map[string]string)
 	userRow["id"] = strconv.Itoa(id)
 	userRow["nickname"] = nickname
 	userRow["gender"] = gender
 	userRow["new_message"] = strconv.Itoa(new_message)
-	
-	if verbose{
-		log.Printf("Got user row: %s, %s", nickname, gender);
+
+	if verbose {
+		log.Printf("Got user row: %s, %s", nickname, gender)
 	}
-	
+
 	return userRow, nil
 }
 
@@ -244,15 +190,15 @@ func get_user_row(db *sql.DB, username string) (map[string]string, error){
 
 	 returns (error)
 */
-func delete_user(db *sql.DB, username string) (error){
+func delete_user(db *sql.DB, username string) error {
 	statement := "DELETE FROM accounts WHERE username = ?"
 
-	stmt,err := db.Prepare(statement)
-	if err != nil{
-	 return err
+	stmt, err := db.Prepare(statement)
+	if err != nil {
+		return err
 	}
 
-	_,err = stmt.Exec(username)
+	_, err = stmt.Exec(username)
 	stmt.Close()
 	return err
 }
@@ -262,12 +208,12 @@ func delete_user(db *sql.DB, username string) (error){
 	 db *sql.DB
 	 returns (error)
 */
-func print_accounts(db *sql.DB) (error){
+func print_accounts(db *sql.DB) error {
 	statement := "SELECT id,username,nickname,password FROM accounts"
 
-	stmt,err := db.Prepare(statement)
-	if err != nil{
-	 return err
+	stmt, err := db.Prepare(statement)
+	if err != nil {
+		return err
 	}
 
 	rows, _ := stmt.Query()
@@ -279,81 +225,83 @@ func print_accounts(db *sql.DB) (error){
 
 	fmt.Println("-------------------------------------\n")
 	for rows.Next() {
-	 rows.Scan(&id, &account, &nickname, &password)
-	 fmt.Printf("User ID: %d\n\tUsername: %s\n\tNickname: %s\n\tPassword: %s\n", id, account, nickname, password)
+		rows.Scan(&id, &account, &nickname, &password)
+		fmt.Printf("User ID: %d\n\tUsername: %s\n\tNickname: %s\n\tPassword: %s\n", id, account, nickname, password)
 	}
 	fmt.Println("-------------------------------------\n")
-	
+
 	rows.Close()
 	stmt.Close()
 	return nil
 }
 
-func set_new_message_flag(db *sql.DB, username string, value int)(error){
+func set_new_message_flag(db *sql.DB, username string, value int) error {
 	statement := "UPDATE accounts SET new_message = ? WHERE username = ?"
-	
-	stmt,err := db.Prepare(statement)
-	if err != nil{
+
+	stmt, err := db.Prepare(statement)
+	if err != nil {
 		return err
 	}
-	
+
 	_, err = stmt.Exec(value, username)
 	stmt.Close()
-	
+
 	return err
 }
 
-func get_new_message_flag(db *sql.DB, username string)(int,error){
+func get_new_message_flag(db *sql.DB, username string) (int, error) {
 	statement := "SELECT new_message FROM accounts WHERE username = ?"
-	
-	stmt,err := db.Prepare(statement)
-	if err != nil{
-		return 0,err
+
+	stmt, err := db.Prepare(statement)
+	if err != nil {
+		return 0, err
 	}
-	
+
 	row, err := stmt.Query(username)
-	if err != nil{
+	if err != nil {
 		stmt.Close()
-		return 0,err
+		return 0, err
 	}
-	
+
 	var new_message int
 	row.Next()
 	row.Scan(&new_message)
 	row.Close()
 	stmt.Close()
-	
+
 	return new_message, nil
 }
 
-func get_all_messages(db *sql.DB, username string)([]map[string]string, error){
-	statement := "SELECT to_user,from_user,body,time FROM messages WHERE to_user = ? OR from_user = ? ORDER BY ID ASC LIMIT 100"
-	
+func get_all_messages(db *sql.DB, username string) ([]map[string]string, error) {
+	statement := "SELECT ID,to_user,from_user,body,time FROM messages WHERE to_user = ? OR from_user = ? ORDER BY ID ASC LIMIT 100"
+
 	stmt, err := db.Prepare(statement)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
-	
+
 	rows, err := stmt.Query(username, username)
-	if err != nil{
+	if err != nil {
 		stmt.Close()
-		return nil,err
+		return nil, err
 	}
-	
+
+	var ID int
 	var to_user string
 	var from_user string
 	var body string
 	var msgtime string
-	
+
 	listOfRows := make([]map[string]string, 0)
 	var i int = 0
-	
-	for rows.Next(){
-		if i >= 100{
+
+	for rows.Next() {
+		if i >= 100 {
 			break
 		}
-		rows.Scan(&to_user, &from_user, &body, &msgtime);
+		rows.Scan(&ID, &to_user, &from_user, &body, &msgtime)
 		row := make(map[string]string)
+		row["ID"] = strconv.Itoa(ID)
 		row["to_user"] = to_user
 		row["from_user"] = from_user
 		row["body"] = body
@@ -361,38 +309,60 @@ func get_all_messages(db *sql.DB, username string)([]map[string]string, error){
 		listOfRows = append(listOfRows, row)
 		i += 1
 	}
-	
+
 	rows.Close()
 	stmt.Close()
-	
+
 	return listOfRows, nil
 }
 
-func send_message(db *sql.DB, to_user string, from_user string, body string)(error){
+func delete_convo(db *sql.DB, to_user string, username string) error {
+	statement := "DELETE FROM messages WHERE to_user = ? AND from_user = ?"
+
+	if verbose {
+		log.Printf("Deleting conversation for user %s to user %s.", username, to_user)
+	}
+
+	stmt, err := db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(to_user, username)
+	stmt.Close()
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+func send_message(db *sql.DB, to_user string, from_user string, body string) error {
 	statement := "INSERT INTO messages(to_user,from_user,body,time) VALUES(?,?,?,?)"
-	
-	if verbose{
+
+	if verbose {
 		log.Printf("Sending message to %s from %s...", to_user, from_user)
 	}
-	
-	stmt,err := db.Prepare(statement)
-	if err != nil{
-		if verbose{
+
+	stmt, err := db.Prepare(statement)
+	if err != nil {
+		if verbose {
 			log.Printf("Failed: %s", err.Error())
 		}
 		return err
 	}
-	
-	_,err = stmt.Exec(to_user, from_user, body, time.Now().String())
+
+	_, err = stmt.Exec(to_user, from_user, body, time.Now().String())
 	stmt.Close()
-	
-	if err == nil{
+
+	if err == nil {
 		err = set_new_message_flag(db, to_user, 1)
-		if verbose{
+		if verbose {
 			log.Println("Success")
 		}
 	}
-	
+
 	return err
 }
 
