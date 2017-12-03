@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"database/sql"
 	"encoding/hex"
-	_ "errors"
+	"errors"
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
@@ -38,7 +38,12 @@ func open_database(verboseEnable bool) (*sql.DB, error) {
 
 	 returns (error)
 */
-func add_user(db *sql.DB, username string, nickname string, gender string, question string, answer string, password string) error {
+func add_user(db *sql.DB, username string, question string, answer string, password string) error {
+
+	exists := user_exists(db, username)
+	if exists {
+		return errors.New("User already exists.")
+	}
 
 	if verbose {
 		log.Printf("Creating new user: %s\n", username)
@@ -46,14 +51,28 @@ func add_user(db *sql.DB, username string, nickname string, gender string, quest
 
 	password = md5Sum(password)
 
-	statement := "INSERT INTO accounts(username,nickname,gender,security_question,security_answer,password) VALUES(?,?,?,?,?,?)"
+	statement := "INSERT INTO accounts(username,security_question,security_answer,password) VALUES(?,?,?,?)"
 
 	stmt, err := db.Prepare(statement)
 	if err != nil {
 		return err
 	}
 
-	_, err = stmt.Exec(username, nickname, gender, question, answer, password)
+	_, err = stmt.Exec(username, question, answer, password)
+	stmt.Close()
+
+	return err
+}
+
+func set_password(db *sql.DB, username string, password string) error {
+
+	statement := "UPDATE accounts SET password = ? WHERE username = ?"
+	stmt, err := db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(md5Sum(password), username)
 	stmt.Close()
 
 	return err
@@ -144,6 +163,43 @@ func verify_user_login(db *sql.DB, username string, password string) (bool, erro
 	return false, nil
 }
 
+func get_control_user_row(db *sql.DB, username string) (map[string]string, error) {
+	statement := "SELECT id,security_question,security_answer FROM accounts WHERE username = ?"
+
+	stmt, err := db.Prepare(statement)
+
+	if err != nil {
+		return nil, err
+	}
+
+	row, err := stmt.Query(username)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var id int
+	var security_question string
+	var security_answer string
+
+	row.Next()
+
+	row.Scan(&id, &security_question, &security_answer)
+	row.Close()
+	stmt.Close()
+
+	userRow := make(map[string]string)
+	userRow["id"] = strconv.Itoa(id)
+	userRow["security_question"] = security_question
+	userRow["security_answer"] = security_answer
+
+	if verbose {
+		log.Printf("Got control user row: %s", username)
+	}
+
+	return userRow, nil
+}
+
 func get_user_row(db *sql.DB, username string) (map[string]string, error) {
 	statement := "SELECT id,nickname,gender,new_message FROM accounts WHERE username = ?"
 
@@ -200,6 +256,33 @@ func delete_user(db *sql.DB, username string) error {
 
 	_, err = stmt.Exec(username)
 	stmt.Close()
+	return err
+}
+
+func delete_convo(db *sql.DB, to_user string, username string) error {
+	exists := user_exists(db, to_user)
+	if !exists {
+		return errors.New("user does not exist")
+	}
+
+	statement := "DELETE FROM messages WHERE (to_user = ? AND from_user = ?) OR (to_user = ? AND from_user = ?)"
+
+	if verbose {
+		log.Printf("Deleting conversation for user %s to user %s.", username, to_user)
+	}
+
+	stmt, err := db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(to_user, username, username, to_user)
+	stmt.Close()
+
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -273,7 +356,7 @@ func get_new_message_flag(db *sql.DB, username string) (int, error) {
 }
 
 func get_all_messages(db *sql.DB, username string) ([]map[string]string, error) {
-	statement := "SELECT ID,to_user,from_user,body,time FROM messages WHERE to_user = ? OR from_user = ? ORDER BY ID ASC LIMIT 100"
+	statement := "SELECT to_user,from_user,body,time FROM messages WHERE to_user = ? OR from_user = ? ORDER BY ID ASC LIMIT 100"
 
 	stmt, err := db.Prepare(statement)
 	if err != nil {
@@ -286,7 +369,6 @@ func get_all_messages(db *sql.DB, username string) ([]map[string]string, error) 
 		return nil, err
 	}
 
-	var ID int
 	var to_user string
 	var from_user string
 	var body string
@@ -299,9 +381,8 @@ func get_all_messages(db *sql.DB, username string) ([]map[string]string, error) 
 		if i >= 100 {
 			break
 		}
-		rows.Scan(&ID, &to_user, &from_user, &body, &msgtime)
+		rows.Scan(&to_user, &from_user, &body, &msgtime)
 		row := make(map[string]string)
-		row["ID"] = strconv.Itoa(ID)
 		row["to_user"] = to_user
 		row["from_user"] = from_user
 		row["body"] = body
@@ -314,28 +395,6 @@ func get_all_messages(db *sql.DB, username string) ([]map[string]string, error) 
 	stmt.Close()
 
 	return listOfRows, nil
-}
-
-func delete_convo(db *sql.DB, to_user string, username string) error {
-	statement := "DELETE FROM messages WHERE to_user = ? AND from_user = ?"
-
-	if verbose {
-		log.Printf("Deleting conversation for user %s to user %s.", username, to_user)
-	}
-
-	stmt, err := db.Prepare(statement)
-	if err != nil {
-		return err
-	}
-
-	_, err = stmt.Exec(to_user, username)
-	stmt.Close()
-
-	if err == nil {
-		return nil
-	}
-
-	return err
 }
 
 func send_message(db *sql.DB, to_user string, from_user string, body string) error {

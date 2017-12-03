@@ -27,7 +27,18 @@ namespace BootChatClient
             }
 
             Dictionary<String,Object> result = Program.agent.forgotPasswordRequest(txtUsername.Text, txtQuestion.Text, txtAnswer.Text, txtNewPassword.Text);
-            Program.agent.DebugPrintDictionary(result);
+            Boolean success = Convert.ToBoolean(result["success"]);
+            if (success)
+            {
+                MessageBox.Show("Your password was successfully changed.");
+                ((LoginForm)Application.OpenForms["LoginForm"]).Activate();
+                this.Close();
+            }
+            else
+            {
+                String exception = Convert.ToString(result["exception"]);
+                MessageBox.Show(exception);
+            }
         }
 
         private void linkBack_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

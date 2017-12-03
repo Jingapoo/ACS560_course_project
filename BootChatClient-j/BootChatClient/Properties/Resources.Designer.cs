@@ -61,6 +61,16 @@ namespace BootChatClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] bootchat_local {
+            get {
+                object obj = ResourceManager.GetObject("bootchat_local", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Capture {
@@ -81,12 +91,82 @@ namespace BootChatClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream dooropen {
+            get {
+                return ResourceManager.GetStream("dooropen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream doorslam {
+            get {
+                return ResourceManager.GetStream("doorslam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream imrcv {
+            get {
+                return ResourceManager.GetStream("imrcv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream imsend {
+            get {
+                return ResourceManager.GetStream("imsend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Matrix {
             get {
                 object obj = ResourceManager.GetObject("Matrix", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream ring {
+            get {
+                return ResourceManager.GetStream("ring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BEGIN TRANSACTION;
+        ///DROP TABLE IF EXISTS `preferences`;
+        ///CREATE TABLE IF NOT EXISTS `preferences` (
+        ///	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+        ///	`key`	VARCHAR ( 32 ) UNIQUE,
+        ///	`value`	VARCHAR ( 32 )
+        ///);
+        ///INSERT INTO `preferences` (id,key,value) VALUES (35,&apos;saved_user&apos;,&apos;&apos;),
+        /// (36,&apos;saved_pass&apos;,&apos;&apos;);
+        ///DROP TABLE IF EXISTS `friends`;
+        ///CREATE TABLE IF NOT EXISTS `friends` (
+        ///	`ID`	INTEGER PRIMARY KEY AUTOINCREMENT,
+        ///	`login_username`	TEXT,
+        ///	`username`	TEXT
+        ///);
+        ///COMMIT;
+        ///.
+        /// </summary>
+        internal static string schema {
+            get {
+                return ResourceManager.GetString("schema", resourceCulture);
             }
         }
     }

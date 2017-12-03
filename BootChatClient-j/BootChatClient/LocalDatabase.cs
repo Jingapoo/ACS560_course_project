@@ -14,6 +14,11 @@ namespace BootChatClient
 
         public LocalDatabase()
         {
+            if (!System.IO.File.Exists("bootchat-local.db"))
+            {
+                System.IO.File.WriteAllBytes("bootchat-local.db", BootChatClient.Properties.Resources.bootchat_local);
+            }
+
             connection = new SQLiteConnection("Data Source=bootchat-local.db;Version=3;");
             connection.Open();
         }
@@ -28,6 +33,60 @@ namespace BootChatClient
                 }
             }
             catch (Exception e) { }
+        }
+
+        public List<String> getFriendsList(String username)
+        {
+            List<String> list = new List<String>();
+
+            String query = String.Format("SELECT username FROM friends WHERE login_username = '{0}'", username);
+            SQLiteCommand stmt = new SQLiteCommand(query, this.connection);
+            SQLiteDataReader row = stmt.ExecuteReader();
+
+            while (row.Read())
+            {
+                list.Add(row.GetString(0));
+            }
+            row.Close();
+            return list;
+        }
+
+        public Boolean addFriendToList(String login_username, String username)
+        {
+            Boolean result = true;
+            try
+            {
+                String query = String.Format("INSERT INTO friends(login_username, username) VALUES('{0}','{1}')", login_username, username);
+                SQLiteCommand stmt = new SQLiteCommand(query, this.connection);
+                return stmt.ExecuteNonQuery() > 0;
+            }
+            catch (Exception) { result = false; }
+            return result;
+        }
+
+        public Boolean removeFriendFromList(String login_username, String username)
+        {
+            Boolean result = true;
+            try
+            {
+                String query = String.Format("DELETE FROM friends WHERE login_username = '{0}' AND username = '{1}'", login_username, username);
+                SQLiteCommand stmt = new SQLiteCommand(query, this.connection);
+                return stmt.ExecuteNonQuery() > 0;
+            }
+            catch (Exception) { result = false; }
+            return result;
+        }
+
+        public Boolean execute(String query)
+        {
+            Boolean result = true;
+            try
+            {
+                SQLiteCommand stmt = new SQLiteCommand(query, this.connection);
+                return stmt.ExecuteNonQuery() > 0;
+            }
+            catch (Exception) { result = false; }
+            return result;
         }
 
         public String getValue(String key)
@@ -67,6 +126,10 @@ namespace BootChatClient
         public Boolean updateValue(String key, String value)
         {
             try{
+                if (!keyExists(key))
+                {
+                    return insertValue(key, value);
+                }
                 String sql = String.Format("UPDATE preferences SET value = '{0}' WHERE key = '{1}';", value, key);
                 SQLiteCommand stmt = new SQLiteCommand(sql, this.connection);
                 return stmt.ExecuteNonQuery() > 0;

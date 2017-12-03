@@ -126,6 +126,12 @@ func (sqlobject *SqlObject) handleConnection(response http.ResponseWriter, reque
 			return
 		}
 
+		if request == "regusr" {
+			jsonString, _ := mapToJsonString(handleCreateUserRequest(sqlobject.db, postData))
+			fmt.Fprintf(response, jsonString)
+			return
+		}
+
 		if request == "send" {
 			jsonString, _ := mapToJsonString(handleSendMessageRequest(sqlobject.db, postData))
 			fmt.Fprintf(response, jsonString)
@@ -162,8 +168,14 @@ func (sqlobject *SqlObject) handleConnection(response http.ResponseWriter, reque
 			return
 		}
 
-		if request == "deletec" {
-			jsonString, _ := mapToJsonString(handleDeleteConversationRequest(sqlobject.db, postData))
+		if request == "forgotpass" {
+			jsonString, _ := mapToJsonString(handleForgotPasswordRequest(sqlobject.db, postData))
+			fmt.Fprintf(response, jsonString)
+			return
+		}
+
+		if request == "deleteconv" {
+			jsonString, _ := mapToJsonString(handleDeleteConvoRequest(sqlobject.db, postData))
 			fmt.Fprintf(response, jsonString)
 			return
 		}
@@ -218,6 +230,54 @@ func handleLoginRequest(db *sql.DB, postData map[string]interface{}) map[string]
 	return replyMap
 }
 
+func handleCreateUserRequest(db *sql.DB, postData map[string]interface{}) map[string]string {
+	replyMap := make(map[string]string)
+	replyMap["success"] = "false"
+
+	var username string
+	var question string
+	var answer string
+	var password string
+
+	if u, exists := postData["username"]; exists {
+		username, _ = u.(string)
+	} else {
+		replyMap["exception"] = "missing parameter: username"
+		return replyMap
+	}
+
+	if q, exists := postData["question"]; exists {
+		question, _ = q.(string)
+	} else {
+		replyMap["exception"] = "missing parameter: security question"
+		return replyMap
+	}
+
+	if a, exists := postData["answer"]; exists {
+		answer, _ = a.(string)
+	} else {
+		replyMap["exception"] = "missing parameter: security answer"
+		return replyMap
+	}
+
+	if p, exists := postData["password"]; exists {
+		password, _ = p.(string)
+	} else {
+		replyMap["exception"] = "missing parameter: password"
+		return replyMap
+	}
+
+	//db *sql.DB, username string, question string, answer string, password string
+	err := add_user(db, username, question, answer, password)
+	if err != nil {
+		replyMap["exception"] = err.Error()
+		return replyMap
+	}
+
+	replyMap["success"] = "true"
+	return replyMap
+}
+
 func handleSetNewMessageRequest(db *sql.DB, postData map[string]interface{}) map[string]string {
 	replyMap := make(map[string]string)
 	replyMap["success"] = "false"
@@ -229,12 +289,20 @@ func handleSetNewMessageRequest(db *sql.DB, postData map[string]interface{}) map
 	}
 
 	var username string = postData["username"].(string)
-	value, err := strconv.Atoi(postData["value"].(string))
-	if err != nil {
-		value = 1
+	var svalue string = postData["value"].(string)
+
+	value := 1
+
+	if svalue != "1" {
+		value = 0
 	}
 
-	err = set_new_message_flag(db, username, value)
+	//value,err := strconv.Atoi(postData["value"].(string))
+	//if err != nil{
+	//	value = 1
+	//}
+
+	err := set_new_message_flag(db, username, value)
 
 	if err != nil {
 		replyMap["exception"] = err.Error()
@@ -243,6 +311,43 @@ func handleSetNewMessageRequest(db *sql.DB, postData map[string]interface{}) map
 
 	if verbose {
 		log.Printf("Updating new message flag for %s\n", username)
+	}
+
+	replyMap["success"] = "true"
+	return replyMap
+}
+
+func handleDeleteConvoRequest(db *sql.DB, postData map[string]interface{}) map[string]string {
+	replyMap := make(map[string]string)
+	replyMap["success"] = "false"
+
+	verifyLoginCredentials := handleLoginRequest(db, postData)
+	if verifyLoginCredentials["success"] != "true" {
+		replyMap["exception"] = "invalid login"
+		return replyMap
+	}
+
+	var username string = postData["username"].(string)
+
+	var remove_user string
+
+	if r, exists := postData["remove_user"]; exists {
+		remove_user, _ = r.(string)
+	} else {
+		replyMap["exception"] = "missing parameter"
+		return replyMap
+	}
+
+	err := delete_convo(db, remove_user, username)
+	if err != nil {
+		replyMap["exception"] = err.Error()
+		return replyMap
+	}
+
+	err = set_new_message_flag(db, username, 1)
+	if err != nil {
+		replyMap["exception"] = err.Error()
+		return replyMap
 	}
 
 	replyMap["success"] = "true"
@@ -275,6 +380,67 @@ func handleGetInboxStatusRequest(db *sql.DB, postData map[string]interface{}) ma
 	replyMap["new"] = strconv.Itoa(newMsg)
 
 	set_new_message_flag(db, username, 0)
+	return replyMap
+}
+
+func handleForgotPasswordRequest(db *sql.DB, postData map[string]interface{}) map[string]string {
+	replyMap := make(map[string]string)
+	replyMap["success"] = "false"
+
+	var username string
+	var question string
+	var answer string
+	var newpassword string
+	var missing bool = false
+
+	if u, exists := postData["username"]; exists {
+		username, _ = u.(string)
+	} else {
+		missing = true
+	}
+
+	if q, exists := postData["security_question"]; exists {
+		question, _ = q.(string)
+	} else {
+		missing = true
+	}
+
+	if a, exists := postData["security_answer"]; exists {
+		answer, _ = a.(string)
+	} else {
+		missing = true
+	}
+
+	if p, exists := postData["newpassword"]; exists {
+		newpassword, _ = p.(string)
+	} else {
+		missing = true
+	}
+
+	if missing {
+		replyMap["exception"] = "missing parameter(s)"
+		return replyMap
+	}
+
+	controlRow, err := get_control_user_row(db, username)
+
+	if err != nil {
+		replyMap["exception"] = err.Error()
+		return replyMap
+	}
+
+	if controlRow["security_answer"] != answer || controlRow["security_question"] != question {
+		replyMap["exception"] = "invalid question/answer"
+		return replyMap
+	}
+
+	err = set_password(db, username, newpassword)
+	if err != nil {
+		replyMap["exception"] = err.Error()
+		return replyMap
+	}
+
+	replyMap["success"] = "true"
 	return replyMap
 }
 
@@ -326,36 +492,6 @@ func handleRegisterNewUserRequest(db *sql.DB, postData map[string]interface{}) m
 	}
 
 	stmt.Close()
-
-	replyMap["success"] = "true"
-	return replyMap
-}
-
-func handleDeleteConversationRequest(db *sql.DB, postData map[string]interface{}) map[string]string {
-	replyMap := make(map[string]string)
-	replyMap["success"] = "false"
-
-	verifyLoginCredentials := handleLoginRequest(db, postData)
-	if verifyLoginCredentials["success"] != "true" {
-		replyMap["exception"] = "invalid credentials: " + verifyLoginCredentials["exception"]
-		return replyMap
-	}
-
-	var to_user string
-
-	if t, exists := postData["to_user"]; exists {
-		to_user, _ = t.(string)
-	} else {
-		replyMap["exception"] = "missing parameter to_user"
-		return replyMap
-	}
-
-	err := delete_convo(db, to_user, postData["username"].(string))
-
-	if err != nil {
-		replyMap["exception"] = err.Error()
-		return replyMap
-	}
 
 	replyMap["success"] = "true"
 	return replyMap

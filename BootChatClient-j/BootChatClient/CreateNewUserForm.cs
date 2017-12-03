@@ -39,9 +39,20 @@ namespace BootChatClient
                 return;
             }
 
-            
+            Dictionary<string, object> result = Program.agent.registerUserRequest(txtUser.Text, txtSecureQue.Text, txtSecureAns.Text, maskPassword.Text);
+            Boolean success = Convert.ToBoolean(result["success"]);
 
-            //...
+            if (success)
+            {
+                MessageBox.Show(String.Format("Congratulations, {0}, you have successfully registered.", txtUser.Text));
+                this.Close();
+            }
+            else
+            {
+                String exception = Convert.ToString(result["exception"]);
+                MessageBox.Show(exception);
+            }
+
         }
 
         private bool checkPasswordMatch(bool clearErrorOnly)

@@ -39,12 +39,12 @@ namespace BootChatClient
             }
 
             if(Program.agent.login(txtUsername.Text, txtPassword.Text)){
-                MessageBox.Show("Welcome, " + Program.agent.getNickname());
+                //MessageBox.Show("Welcome, " + Program.agent.getNickname());
                 ChatRoomInterface ci = new ChatRoomInterface();
                 ci.Show();
                 this.Visible = false;
             }else{
-                MessageBox.Show("Not Logged In!");
+                MessageBox.Show("Could not log in.");
             }
 
             //String savedUser = Program.localdb.getValue("saved_user");
@@ -73,11 +73,7 @@ namespace BootChatClient
         private void btnCreateNewAccount_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             CreateNewUserForm newUserForm = new CreateNewUserForm();
-            DialogResult userClicked = newUserForm.ShowDialog();
-            if(userClicked == DialogResult.OK)
-            {
-                
-            }
+            newUserForm.Show();
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -103,6 +99,25 @@ namespace BootChatClient
                 Program.localdb.insertValue("saved_user", String.Empty);
                 Program.localdb.insertValue("saved_pass", String.Empty);
             }
+        }
+
+        private void pictureBox2_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+                User32.ReleaseCapture();
+                User32.SendMessage(Handle, User32.WM_NCLBUTTONDOWN, User32.HT_CAPTION, 0);
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }

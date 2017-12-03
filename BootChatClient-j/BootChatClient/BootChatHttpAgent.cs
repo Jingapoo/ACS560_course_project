@@ -26,6 +26,14 @@ namespace BootChatClient
             //this.serverURL = serverURL;
         }
 
+        public void Logout()
+        {
+            authenticatedUsername = String.Empty;
+            authenticatedPassword = String.Empty;
+            newMessage = false;
+            loggedIn = false;
+        }
+
         public bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors){
             return true;
         }
@@ -141,6 +149,27 @@ namespace BootChatClient
             return result;
         }
 
+        public Dictionary<String, Object> deleteConvo(String username)
+        {
+            Dictionary<String, Object> result = new Dictionary<string, object>();
+            if (!loggedIn)
+            {
+                result["success"] = false;
+                result["exception"] = "not logged in";
+                return result;
+            }
+
+            Dictionary<String, Object> postData = new Dictionary<String, Object>();
+            postData.Add("request", "deleteconv");
+            postData.Add("username", this.authenticatedUsername);
+            postData.Add("password", this.authenticatedPassword);
+            postData.Add("remove_user", username);
+
+            result = request(postData);
+
+            return result;
+        }
+
         public Dictionary<String, Object> forgotPasswordRequest(String username, String question, String answer, String newpassword)
         {
             Dictionary<String, Object> result = new Dictionary<string, object>();
@@ -151,6 +180,22 @@ namespace BootChatClient
             postData.Add("security_question", question);
             postData.Add("security_answer", answer);
             postData.Add("newpassword", newpassword);
+
+            result = request(postData);
+
+            return result;
+        }
+
+        public Dictionary<String, Object> registerUserRequest(String username, String question, String answer, String password)
+        {
+            Dictionary<String, Object> result = new Dictionary<string, object>();
+
+            Dictionary<String, Object> postData = new Dictionary<String, Object>();
+            postData.Add("request", "regusr");
+            postData.Add("username", username);
+            postData.Add("question", question);
+            postData.Add("answer", answer);
+            postData.Add("password", password);
 
             result = request(postData);
 
