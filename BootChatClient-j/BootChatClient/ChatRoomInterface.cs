@@ -26,7 +26,7 @@ namespace BootChatClient
         private volatile Boolean complete = false;
         private volatile int lastNumberOfMessages = 0;
         private volatile int lastNumberOfInbox = 0;
-        private Boolean firstload = false;
+        private Boolean firstload = true;
         private volatile Boolean loggingOut = false;
 
 
@@ -55,6 +55,8 @@ namespace BootChatClient
                         updateInboxList();
                         updateConvo();
                         Program.agent.setNewMessage(false);
+
+                        firstload = false;
                     }
 
                     for(int i = 0; i < 30 && tick; i++)
@@ -119,7 +121,7 @@ namespace BootChatClient
             if (success)
             {
                 //lstInbox.Items.Clear();
-                int numInbox = 0;
+                //int numInbox = 0;
 
                 foreach (Object message in (Object[])messages["messages"])
                 {
@@ -127,18 +129,17 @@ namespace BootChatClient
                     if (!lstInbox.Items.Contains(mmessage["from_user"]) && Convert.ToString(mmessage["from_user"]) != Program.agent.getUsername())
                     {
                         lstInbox.Items.Add(mmessage["from_user"]);
-                        numInbox++;
+                        //numInbox++;
                     }
                 }
 
                 if(lstInbox.Items.Count > 0)
                 {
-                    if(lstInbox.Items.Count > lastNumberOfInbox && firstload)
+                    if(lstInbox.Items.Count > lastNumberOfInbox && !firstload)
                     {
                         SoundPlayer s = new SoundPlayer(BootChatClient.Properties.Resources.ring);
                         s.Play();
                     }
-                    firstload = true;
                 }
 
                 lastNumberOfInbox = lstInbox.Items.Count;
@@ -184,6 +185,7 @@ namespace BootChatClient
             txtConvo.SelectionStart = txtConvo.Text.Length;
             txtConvo.ScrollToCaret();
 
+          
             if (lastNumberOfMessages != numOfMessages)
             {
                 if (lastNumberOfMessages > 0)
