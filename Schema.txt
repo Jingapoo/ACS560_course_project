@@ -1,0 +1,19 @@
+CREATE TABLE messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    to_user VARCHAR(32),
+    from_user VARCHAR(32),
+    body VARCHAR(10000),
+    time VARCHAR(32)
+);
+
+CREATE TABLE "accounts" (
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT,
+	`username`	VARCHAR ( 32 ) UNIQUE,
+	`nickname`	VARCHAR ( 32 ) UNIQUE,
+	`gender`	CHARACTER ( 1 ),
+	`picture`	TEXT,
+	`security_question`	VARCHAR ( 256 ),
+	`security_answer`	VARCHAR ( 256 ),
+	`password`	VARCHAR ( 128 ),
+	`new_message`	INTEGER
+);
