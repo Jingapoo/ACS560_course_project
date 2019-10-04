@@ -46,15 +46,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	//print_accounts(dbo)
-	//add_user(dbo, "jingru", "bee", "f", "why do i smell?", "i farted", "ruan")
+	//init_tables(dbo)
+	
 
 	sqlHttpHandler := &SqlObject{db: dbo}
 	http.HandleFunc("/", sqlHttpHandler.handleConnection)
 
-	log.Printf("Starting server on port %s...", os.Getenv(`PORT`))
-	//err = http.ListenAndServeTLS(os.Getenv(`IP`) + ":" + os.Getenv(`PORT`), "./etc/server.crt", "./etc/server.key", nil)
-	err = http.ListenAndServe(os.Getenv(`IP`)+":"+os.Getenv(`PORT`), nil)
+	log.Printf("Starting server on port %s...", "8443")
+	//err = http.ListenAndServeTLS("127.0.0.1:8443", "./etc/server.crt", "./etc/server.key", nil)
+	err = http.ListenAndServe("127.0.0.1:8443", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
